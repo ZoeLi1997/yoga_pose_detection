@@ -3,7 +3,7 @@ import time
 import numpy as np
 from random import randint
 
-image1 = cv2.imread("group.jpg")
+image1 = cv2.imread("./../datasets/training_set/bridge/File1.jpg")
 
 protoFile = "pose/coco/pose_deploy_linevec.prototxt"
 weightsFile = "pose/coco/pose_iter_440000.caffemodel"
@@ -181,10 +181,23 @@ keypoints_list = np.zeros((0,3))
 keypoint_id = 0
 threshold = 0.1
 
+minx = float('inf')
+maxx = float('-inf')
+miny = float('inf')
+maxy = float('-inf')
 for part in range(nPoints):
     probMap = output[0,part,:,:]
     probMap = cv2.resize(probMap, (image1.shape[1], image1.shape[0]))
     keypoints = getKeypoints(probMap, threshold)
+    for key in keypoints:
+        if key[0] < minx:
+            minx = key[0]
+        if key[0] > maxx:
+            maxx = key[0]
+        if key[1] < miny:
+            miny = key[1]
+        if key[1] > maxy:
+            maxy = key[1]
     print("Keypoints - {} : {}".format(keypointsMapping[part], keypoints))
     keypoints_with_id = []
     for i in range(len(keypoints)):
@@ -193,7 +206,16 @@ for part in range(nPoints):
         keypoint_id += 1
 
     detected_keypoints.append(keypoints_with_id)
-
+box_size = max((maxx-minx), (maxy-miny))
+new_keypoints = []
+for keypoint in detected_keypoints:
+    new_key = []
+    for i in keypoint:
+        newx = (i[0] - minx)/box_size
+        newy = (i[1] - miny)/box_size
+        new_key.append([newx, newy, i[2], i[3]])
+    new_keypoints.append(new_key)
+print(new_keypoints)
 
 frameClone = image1.copy()
 for i in range(nPoints):
