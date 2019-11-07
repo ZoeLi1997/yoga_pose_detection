@@ -210,7 +210,12 @@ def image_processing(path):
             keypoint_id += 1
 
         detected_keypoints.append(keypoints_with_id)
-    box_size = max((maxx-minx), (maxy-miny))
+    diffx = maxx-minx
+    diffy = maxy-miny
+    box_size = max(diffx, diffy)
+    if box_size == 0:
+        print("Error, boxsize is 0. Diffx = {}, Diffy = {}".format(diffx, diffy))
+        return []
     new_keypoints = []
     for keypoint in detected_keypoints:
         new_key = []
@@ -253,16 +258,16 @@ def image_processing(path):
 
 
 root_path = '../datasets/training_set/'
-paths = ['mountain']
+paths = ['bridge', 'childs', 'downwarddog', 'plank', 'seatedforwardbend']
 base_points = ['Nose', 'Neck', 'R-Sho', 'R-Elb', 'R-Wr', 'L-Sho', 'L-Elb', 'L-Wr', 'R-Hip', 'R-Knee', 'R-Ank', 'L-Hip', 'L-Knee', 'L-Ank', 'R-Eye', 'L-Eye', 'R-Ear', 'L-Ear']
 keypoints_mapping = ['label']
 keypoints = []
 # Creating first row data
-for i in base_points:
-    keypoints_mapping += [i+'x', i+'y']
-with open("scaled_data.csv", 'w', newline='') as myfile:
-    wr = csv.writer(myfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    wr.writerow(keypoints_mapping)
+# for i in base_points:
+#     keypoints_mapping += [i+'x', i+'y']
+# with open("scaled_data.csv", 'w', newline='') as myfile:
+#     wr = csv.writer(myfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+#     wr.writerow(keypoints_mapping)
 
 #traverse each directory
 for i in range(len(paths)):
@@ -274,7 +279,9 @@ for i in range(len(paths)):
                 print("Processing image: {}".format(image))
                 image_path = root_path + paths[i] + "/" + image
                 points = image_processing(image_path)
-                keypoints.append(points)
+                if points != []:
+                    keypoints.append(points)
+            
     #write the points in the csv file
     with open("scaled_data.csv", 'a', newline='') as myfile:
         wr = csv.writer(myfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
