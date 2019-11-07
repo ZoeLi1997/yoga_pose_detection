@@ -7,8 +7,7 @@ import csv
 
 
 def image_processing(path):
-
-    image1 = cv2.imread("./../datasets/training_set/bridge/File1.jpg")
+    image1 = cv2.imread(path)
 
     protoFile = "pose/coco/pose_deploy_linevec.prototxt"
     weightsFile = "pose/coco/pose_iter_440000.caffemodel"
@@ -220,7 +219,6 @@ def image_processing(path):
             newy = (i[1] - miny)/box_size
             new_key.append([newx, newy, i[2], i[3]])
         new_keypoints.append(new_key)
-    # return new_keypoints
     result = []
     for i in new_keypoints:
         if i == []:
@@ -255,7 +253,7 @@ def image_processing(path):
 
 
 root_path = '../datasets/training_set/'
-paths = ['bridge']
+paths = ['mountain']
 base_points = ['Nose', 'Neck', 'R-Sho', 'R-Elb', 'R-Wr', 'L-Sho', 'L-Elb', 'L-Wr', 'R-Hip', 'R-Knee', 'R-Ank', 'L-Hip', 'L-Knee', 'L-Ank', 'R-Eye', 'L-Eye', 'R-Ear', 'L-Ear']
 keypoints_mapping = ['label']
 keypoints = []
@@ -273,8 +271,10 @@ for i in range(len(paths)):
         #traverse each image
         for image in f_names:
             if ".jpg" in image:
-                image_path = paths[i] + "/" + image
-                keypoints.append(image_processing(image_path))
+                print("Processing image: {}".format(image))
+                image_path = root_path + paths[i] + "/" + image
+                points = image_processing(image_path)
+                keypoints.append(points)
     #write the points in the csv file
     with open("scaled_data.csv", 'a', newline='') as myfile:
         wr = csv.writer(myfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
