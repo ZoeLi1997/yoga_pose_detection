@@ -238,7 +238,6 @@ root_path = '../datasets/approved/'
 paths = ['mountain', 'tree', 'triangle', 'warrior2']
 base_points = ['Nose', 'Neck', 'R-Sho', 'R-Elb', 'R-Wr', 'L-Sho', 'L-Elb', 'L-Wr', 'R-Hip', 'R-Knee', 'R-Ank', 'L-Hip', 'L-Knee', 'L-Ank', 'R-Eye', 'L-Eye', 'R-Ear', 'L-Ear']
 keypoints_mapping = ['label']
-keypoints = []
 # Creating first row data
 for i in base_points:
     keypoints_mapping += [i+'x', i+'y']
@@ -249,6 +248,7 @@ with open("scaled_data.csv", 'w', newline='') as myfile:
 #traverse each directory
 for i in range(len(paths)):
     path = root_path + paths[i]
+    keypoints = []
     for root,d_names,f_names in os.walk(path):
         #traverse each image
         for image in f_names:
@@ -259,9 +259,9 @@ for i in range(len(paths)):
                 if points != []:
                     keypoints.append(points)
             
-#write the points in the csv file
-with open("scaled_data.csv", 'a', newline='') as myfile:
-    wr = csv.writer(myfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    for keypoint in keypoints:
-        keypoint.insert(0, i)
-        wr.writerow(keypoint)
+    #write the points in the csv file
+    with open("scaled_data.csv", 'a', newline='') as myfile:
+        wr = csv.writer(myfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        for keypoint in keypoints:
+            keypoint.insert(0, i)
+            wr.writerow(keypoint)
