@@ -259,9 +259,9 @@ for i in range(len(paths)):
                 if points != []:
                     keypoints.append(points)
             
-    #write the points in the csv file
-    with open("scaled_data.csv", 'a', newline='') as myfile:
-        wr = csv.writer(myfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        for keypoint in keypoints:
-            keypoint.insert(0, paths[i])
-            wr.writerow(keypoint)
+#write the points in the csv file
+with open("scaled_data.csv", 'a', newline='') as myfile:
+    wr = csv.writer(myfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    for keypoint in keypoints:
+        keypoint.insert(0, i)
+        wr.writerow(keypoint)
