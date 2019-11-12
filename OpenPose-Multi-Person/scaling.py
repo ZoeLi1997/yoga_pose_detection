@@ -233,41 +233,18 @@ def image_processing(path):
         result.append(i[0][0])
         result.append(i[0][1])
     return result
-            
-    # frameClone = image1.copy()
-    # for i in range(nPoints):
-    #     for j in range(len(detected_keypoints[i])):
-    #         cv2.circle(frameClone, detected_keypoints[i][j][0:2], 5, colors[i], -1, cv2.LINE_AA)
-    # cv2.imshow("Keypoints",frameClone)
 
-    # valid_pairs, invalid_pairs = getValidPairs(output)
-    # personwiseKeypoints = getPersonwiseKeypoints(valid_pairs, invalid_pairs)
-
-    # for i in range(17):
-    #     for n in range(len(personwiseKeypoints)):
-    #         index = personwiseKeypoints[n][np.array(POSE_PAIRS[i])]
-    #         if -1 in index:
-    #             continue
-    #         B = np.int32(keypoints_list[index.astype(int), 0])
-    #         A = np.int32(keypoints_list[index.astype(int), 1])
-    #         cv2.line(frameClone, (B[0], A[0]), (B[1], A[1]), colors[i], 3, cv2.LINE_AA)
-
-
-    # cv2.imshow("Detected Pose" , frameClone)
-    # cv2.waitKey(0)
-
-
-root_path = '../datasets/training_set/'
-paths = ['warrior1', 'warrior2']
+root_path = '../datasets/approved/'
+paths = ['mountain', 'tree', 'triangle', 'warrior2']
 base_points = ['Nose', 'Neck', 'R-Sho', 'R-Elb', 'R-Wr', 'L-Sho', 'L-Elb', 'L-Wr', 'R-Hip', 'R-Knee', 'R-Ank', 'L-Hip', 'L-Knee', 'L-Ank', 'R-Eye', 'L-Eye', 'R-Ear', 'L-Ear']
 keypoints_mapping = ['label']
 keypoints = []
 # Creating first row data
-# for i in base_points:
-#     keypoints_mapping += [i+'x', i+'y']
-# with open("scaled_data.csv", 'w', newline='') as myfile:
-#     wr = csv.writer(myfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-#     wr.writerow(keypoints_mapping)
+for i in base_points:
+    keypoints_mapping += [i+'x', i+'y']
+with open("scaled_data.csv", 'w', newline='') as myfile:
+    wr = csv.writer(myfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    wr.writerow(keypoints_mapping)
 
 #traverse each directory
 for i in range(len(paths)):
