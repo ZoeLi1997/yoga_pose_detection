@@ -15,5 +15,5 @@ for i in range(len(paths)):
             image_path = root_path + paths[i] + "/" + image
             im = Image.open(image_path)
             im = ImageOps.mirror(im)
-            flipped_path = flip_path + paths[i] + "/" + image
+            flipped_path = flip_path + paths[i] + "/" + "flipped_" + image
             im.save(flipped_path)

@@ -234,14 +234,14 @@ def image_processing(path):
         result.append(i[0][1])
     return result
 
-root_path = '../datasets/approved/'
-paths = ['mountain', 'tree', 'triangle', 'warrior2']
+root_path = '../datasets/combined/'
+paths = ['mountain', 'tree', 'triangle', 'warrior2', 'natarajasana', 'side_plank']
 base_points = ['Nose', 'Neck', 'R-Sho', 'R-Elb', 'R-Wr', 'L-Sho', 'L-Elb', 'L-Wr', 'R-Hip', 'R-Knee', 'R-Ank', 'L-Hip', 'L-Knee', 'L-Ank', 'R-Eye', 'L-Eye', 'R-Ear', 'L-Ear']
 keypoints_mapping = ['label']
 # Creating first row data
 for i in base_points:
     keypoints_mapping += [i+'x', i+'y']
-with open("scaled_data.csv", 'w', newline='') as myfile:
+with open("scaled_data_combined.csv", 'w', newline='') as myfile:
     wr = csv.writer(myfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     wr.writerow(keypoints_mapping)
 
