@@ -232,6 +232,63 @@ def perform_keypoint_analysis(filename, single=False):
     cv2.imwrite("output.png",frameClone)
 
     return detected_keypoints, frameClone, image1
+# returns true if passed filter, false if not
+def apply_filter(invalid):
+    '''
+        keypointsMapping = ['Nose', 'Neck', 'R-Sho', 'R-Elb', 
+        'R-Wr', 'L-Sho', 'L-Elb', 'L-Wr', 
+        'R-Hip', 'R-Knee', 'R-Ank', 'L-Hip',
+         'L-Knee', 'L-Ank', 'R-Eye', 'L-Eye', 
+         'R-Ear', 'L-Ear']
+
+        POSE_PAIRS = [[1,2], [1,5], [2,3], [3,4], [5,6], [6,7],
+                      [1,8], [8,9], [9,10], [1,11], [11,12], [12,13],
+                      [1,0], [0,14], [14,16], [0,15], [15,17],
+                      [2,17], [5,16] ]
+    '''
+    
+    '''
+    for each list, you need at least one keypoint:
+    [r-eye, l-eye, 'r-ear', 'l-ear']
+    [r-elb, r-wr]
+    [l-elb, l-wr]
+    
+    need all:
+    [l-ank, r-ank]
+    '''
+    # set up lists of keypoints that must not be in the invalid list
+    required_keypoints = []
+    group_keypoints = []
+    
+    # required keypoints
+    for item in ["L-Ank", "R-Ank", "R-Wr", "L-Wr"]:
+        required_keypoints.append(keypointsMapping.index(item))
+    # group required keypoints (req. one from each group at least)
+    for outer in [['R-Eye', 'L-Eye', 'R-Ear', 'L-Ear']]:
+        to_append = []
+        for inner in outer:
+            to_append.append(keypointsMapping.index(inner))
+        group_keypoints.append(to_append)
+        
+    #print(required_keypoints)
+    #print(group_keypoints)
+    
+    # now check if the required ones are all there
+    for req_kp in required_keypoints:
+        if req_kp in invalid:
+            #print("doesnt have kp " + str(req_kp) + "(" + keypointsMapping[req_kp] + ")")
+            return False
+        #else:
+            #print("has kp " + str(req_kp) + "(" + keypointsMapping[req_kp] + ")")
+    
+    # now check that at least one of each list for minimum_keypoints is not in invalid
+    for kp_set in group_keypoints:
+        kp_valid = [i for i in kp_set if i not in invalid]
+        if len(kp_valid) < 1:
+            return False
+    return True
+        
+
 def predict_pose(result):
     result = result[0].tolist()
     ind  = result.index(max(result))
