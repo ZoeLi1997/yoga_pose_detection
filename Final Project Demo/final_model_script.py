@@ -16,7 +16,7 @@ import A2_Functions as a2
 # In[7]:
 
 
-model = load_model("../yoga_pals_model.h5")
+model = load_model("yoga_pals_model.h5")
 save_file = "output.png"
 read_file = "../datasets/training_set/triangle/File29.jpg"#"Images/Triangle.png"#"fromclient.jpg"
 pose_file = "predicted_pose.txt"
