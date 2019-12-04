@@ -292,7 +292,7 @@ def apply_filter(invalid):
 def predict_pose(result):
     result = result[0].tolist()
     ind  = result.index(max(result))
-    return labels[ind]
+    return labels[ind], max(result)
 def scale_keypoints(path):
     image1 = cv2.imread(path)
     
