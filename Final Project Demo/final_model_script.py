@@ -40,8 +40,8 @@ if a2.apply_filter(missing) is True:
     predict = model.predict(np.array([results]))
     predicted_pose, confidence = a2.predict_pose(predict)
     with open(pose_file, "w") as fp:
-        fp.write("With " + str(confidence) + "% confidence, the predicted pose is " + predicted_pose)
-    print("Our model predicted that your pose is: " + predicted_pose + (" with %.2f" % (confidence * 100)) + "% confidence.")
+        fp.write("Our model predicted that your pose is: " + predicted_pose + (" with %.2f" % (confidence * 100)) + "% confidence.")
+#    print("Our model predicted that your pose is: " + predicted_pose + (" with %.2f" % (confidence * 100)) + "% confidence.")
 else:
     with open(pose_file, "w") as fp:
         fp.write("Error: Photo did not pass filter.")
